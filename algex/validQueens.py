@@ -28,7 +28,25 @@ def isValidPlacement(rows, rowIdx, n):
 def isSolution(rows, n):
 	return rows[-1] is not None
 
+def printSolution(rows, n):
+	for r in range(n):
+		row = [1 if rows[r] == c else 0 for c in range(n)]
+		print(row)
+	print('-' * 2 * (n+1))
+
 def backtrack(rows, row, n, count):
 	if isSolution(rows, n):
+		printSolution(rows, n)
 		count[0] += 1
 		return True
+
+	# row is last PLACED row
+	if row >= n:
+		return False
+
+	currRow = row + 1
+	for colVal in range(n):
+		rows[currRow] = colVal
+		if isValidPlacement(rows, currRow, n):
+			backtrack(rows, currRow, n, count)
+		rows[currRow] = None
